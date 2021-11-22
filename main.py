@@ -1,5 +1,6 @@
 import re
 import csv
+import collections
 
 
 class Regex:
@@ -10,7 +11,10 @@ class Regex:
         with open(filename, encoding="utf-8") as f:
             rows = csv.reader(f, delimiter=",")
             self.contacts_list = list(rows)
-        del self.contacts_list[0]
+
+    def prepare_data(self):
+        for el in self.contacts_list:
+            del el[7:]
 
     def reg_fio(self):
         for el in self.contacts_list:
@@ -43,7 +47,6 @@ class Regex:
         for el in self.contacts_list:
             result = pattern.sub(sub, el[5])
             el[5] = result
-        print(self.contacts_list)
 
     def save_data(self, final_filename):
         with open(final_filename, "w", newline='') as f:
@@ -54,9 +57,9 @@ class Regex:
 if __name__ == '__main__':
     pattern1 = re.compile(r"(\+7|8)?\s?\(?(\d{3})\)?\s*-?(\d{3})[\s-]*(\d{2})[\s-]*(\d{2})(\s?\(?(доб\.)\s?(\d{4})\)?)?")
     sub1 = r"+7(\2)\3-\4-\5 \7\8"
-
     a = Regex()
     a.open_data('data.csv')
+    a.prepare_data()
     a.reg_fio()
     a.dell_double()
     a.reg_phone(pattern1, sub1)
