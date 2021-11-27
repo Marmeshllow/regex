@@ -40,7 +40,7 @@ class Regex:
                                 for num3, call in enumerate(row):
                                     if len(el[num3]) < len(call):
                                         el[num3] = call
-        for i in prepare_to_del[::-1]:
+        for i in prepare_to_del[:-1]:
             del self.contacts_list[i]
 
     def reg_phone(self, pattern, sub):
